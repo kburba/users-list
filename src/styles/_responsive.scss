@@ -1,0 +1,24 @@
+@media screen and (min-width: 1024px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+@media screen and (min-width: 1366px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .topBar .logo {
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .topBar .menu .item {
+    margin: 15px 5px;
+    white-space: nowrap;
+  }
+}
