@@ -1,5 +1,9 @@
-import { useState } from 'react'
-import { SortByType, TableValueTypes } from './table.types'
+import { useState } from 'react';
+import { SortByType, TableValueTypes } from './table.types';
+
+export function capitalizeFirstLetter(string: String) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 export const useSortBy = (
   data: any[]
@@ -8,47 +12,47 @@ export const useSortBy = (
   sortBy: SortByType | null,
   setSort: (param: string) => void
 ] => {
-  const [sortBy, setSortBy] = useState<SortByType | null>(null)
+  const [sortBy, setSortBy] = useState<SortByType | null>(null);
 
   function setSort(param: string) {
     setSortBy((currSort) => ({
       asc: currSort?.by === param ? !currSort.asc : true,
       by: param,
-    }))
+    }));
   }
 
   function sortData(a: any, b: any) {
     if (!sortBy) {
-      return 0
+      return 0;
     }
 
-    if (a[sortBy.by] > b[sortBy.by]) return sortBy.asc ? 1 : -1
-    if (a[sortBy.by] < b[sortBy.by]) return sortBy.asc ? -1 : 1
-    return 0
+    if (a[sortBy.by] > b[sortBy.by]) return sortBy.asc ? 1 : -1;
+    if (a[sortBy.by] < b[sortBy.by]) return sortBy.asc ? -1 : 1;
+    return 0;
   }
-  const sortedData = data.sort(sortData)
+  const sortedData = data.sort(sortData);
 
-  return [sortedData, sortBy, setSort]
-}
+  return [sortedData, sortBy, setSort];
+};
 
 export function formatCellValue(value: any, type?: TableValueTypes) {
   switch (type) {
     default:
-      return value
+      return value;
   }
 }
 
 export function getFilterMatch(text: string = '', filter: string = '') {
   if (!text || !filter) {
-    return { parts: [text], searchWords: [] }
+    return { parts: [text], searchWords: [] };
   }
 
-  const searchWords = filter.toLowerCase().split(' ')
+  const searchWords = filter.toLowerCase().split(' ');
   const searchRx = filter
     .toLowerCase()
     .replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&')
-    .replace(/ /g, '|')
+    .replace(/ /g, '|');
 
-  const parts = text.toString().split(new RegExp(`(${searchRx})`, 'gi'))
-  return { parts, searchWords }
+  const parts = text.toString().split(new RegExp(`(${searchRx})`, 'gi'));
+  return { parts, searchWords };
 }
