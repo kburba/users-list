@@ -16,6 +16,7 @@ import UsersTable from './UsersTable';
 import { orange } from '@material-ui/core/colors';
 import useFilter from '../../hooks/useFilter';
 import useUsers from './useUsers';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,6 +56,7 @@ export default function Users() {
   const [modalValues, setModalValues] = useState<TUser>();
   const users = useUsers();
   const { filterValue, setFilterValue, filteredData } = useFilter<TUser>(users);
+  const { t } = useTranslation();
   const classes = useStyles();
 
   const dispatch = useDispatch<Dispatch<UsersActions>>();
@@ -83,14 +85,14 @@ export default function Users() {
       <div className="inline space-btw align-cnt">
         <div className={classes.root}>
           <Avatar className={classes.orange}></Avatar>
-          <Typography variant="h4">Members</Typography>
+          <Typography variant="h4">{t('Members')}</Typography>
         </div>
         <div className={classes.filters}>
           <TextField
             variant="outlined"
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
-            placeholder="Search..."
+            placeholder={t('Search...')}
             InputProps={{
               className: classes.rounded,
             }}
@@ -102,7 +104,7 @@ export default function Users() {
             onClick={() => setIsOpen(true)}
             size="small"
           >
-            Add User
+            {t('Add User')}
           </Button>
         </div>
       </div>

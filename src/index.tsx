@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
@@ -6,14 +6,16 @@ import configureStore from './store/configureStore';
 import * as serviceWorker from './serviceWorker';
 import Modal from 'react-modal';
 
-const store = configureStore();
+import './i18n';
 
-export type AppDispatch = typeof store.dispatch;
+const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Suspense fallback="loading">
+        <App />
+      </Suspense>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
