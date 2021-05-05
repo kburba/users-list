@@ -1,27 +1,21 @@
 import {
   Avatar,
+  Button,
   createStyles,
   makeStyles,
+  TextField,
   Theme,
   Typography,
 } from '@material-ui/core';
-import React, { Dispatch, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getUsers,
-  saveUser,
-  updateUser,
-} from '../../store/actions/user.actions';
-import { RootState } from '../../store/configureStore';
-import {
-  UsersActions,
-  UsersState,
-  TUser,
-  TUserNew,
-} from '../../store/types/user.types';
+import React, { Dispatch, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { saveUser, updateUser } from '../../store/actions/user.actions';
+import { UsersActions, TUser, TUserNew } from '../../store/types/user.types';
 import UsersModal from './UserModal';
 import UsersTable from './UsersTable';
 import { orange } from '@material-ui/core/colors';
+import useFilter from '../../hooks/useFilter';
+import useUsers from './useUsers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,19 +33,31 @@ const useStyles = makeStyles((theme: Theme) =>
       width: theme.spacing(7),
       height: theme.spacing(7),
     },
+    filters: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginTop: theme.spacing(7),
+      marginBottom: theme.spacing(2),
+    },
+    rounded: {
+      borderRadius: '25px',
+    },
+    roundedButton: {
+      borderRadius: '25px',
+      backgroundColor: orange[400],
+      padding: '5px 25px',
+    },
   })
 );
 
 export default function Users() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalValues, setModalValues] = useState<TUser>();
+  const users = useUsers();
+  const { filterValue, setFilterValue, filteredData } = useFilter<TUser>(users);
   const classes = useStyles();
 
   const dispatch = useDispatch<Dispatch<UsersActions>>();
-
-  useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
 
   function handleEditItemClick(item: TUser) {
     setModalValues(item);
@@ -72,15 +78,6 @@ export default function Users() {
     setIsOpen(false);
   }
 
-  const { users } = useSelector<
-    RootState,
-    {
-      users: UsersState['users'];
-    }
-  >(({ usersReducer }) => ({
-    users: usersReducer.users,
-  }));
-
   return (
     <div>
       <div className="inline space-btw align-cnt">
@@ -88,17 +85,28 @@ export default function Users() {
           <Avatar className={classes.orange}></Avatar>
           <Typography variant="h4">Members</Typography>
         </div>
-        <button
-          type="button"
-          className="kbbutton primary"
-          onClick={() => setIsOpen(true)}
-        >
-          Add User
-        </button>
+        <div className={classes.filters}>
+          <TextField
+            variant="outlined"
+            value={filterValue}
+            onChange={(e) => setFilterValue(e.target.value)}
+            placeholder="Search..."
+            InputProps={{
+              className: classes.rounded,
+            }}
+            size="small"
+          />
+          <Button
+            className={classes.roundedButton}
+            type="button"
+            onClick={() => setIsOpen(true)}
+            size="small"
+          >
+            Add User
+          </Button>
+        </div>
       </div>
-      {users.length > 0 && (
-        <UsersTable onEditClick={handleEditItemClick} users={users} />
-      )}
+      <UsersTable onEditClick={handleEditItemClick} users={filteredData} />
       <UsersModal
         isOpen={modalIsOpen}
         handleClose={handleClose}

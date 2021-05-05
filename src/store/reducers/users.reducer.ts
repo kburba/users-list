@@ -32,7 +32,7 @@ const usersReducer = (
     case USER_ACTIONS.SAVE_SUCCESS:
       return {
         ...state,
-        users: [...state.users, action.payload],
+        users: [action.payload, ...state.users],
       };
     case USER_ACTIONS.GET_SUCCESS:
       return {

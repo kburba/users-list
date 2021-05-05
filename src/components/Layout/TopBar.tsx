@@ -56,7 +56,6 @@ export default function TopBar() {
             to="/services"
             activeClassName={classes.linkActive}
             className={classes.link}
-            exact
           >
             Services
           </Link>
@@ -67,7 +66,6 @@ export default function TopBar() {
             to="/clients"
             className={classes.link}
             activeClassName={classes.linkActive}
-            exact
           >
             Clients
           </Link>
@@ -78,7 +76,6 @@ export default function TopBar() {
             to="/about"
             className={classes.link}
             activeClassName={classes.linkActive}
-            exact
           >
             About Us
           </Link>
@@ -89,7 +86,6 @@ export default function TopBar() {
             to="/members"
             className={classes.link}
             activeClassName={classes.linkActive}
-            exact
           >
             Members
           </Link>
@@ -100,7 +96,6 @@ export default function TopBar() {
             to="/contact"
             className={classes.link}
             activeClassName={classes.linkActive}
-            exact
           >
             Contact
           </Link>
