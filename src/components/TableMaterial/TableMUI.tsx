@@ -10,6 +10,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { Link } from 'react-router-dom';
 import { orange } from '@material-ui/core/colors';
+import { IconButton } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
+import EditIcon from '@material-ui/icons/Create';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -22,6 +25,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 }
 
 type Order = 'asc' | 'desc';
+export type ClickCallbackTypes = 'edit' | 'delete';
 
 function getComparator<Key extends keyof any>(
   order: Order,
@@ -50,6 +54,7 @@ export interface TableColumn {
   id: string;
   linkToPrefix?: string;
   linkToKey?: string;
+  buttons?: string[];
 }
 
 interface EnhancedTableProps {
@@ -133,9 +138,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function TableMUI({
   data,
   columns,
+  clickCallback,
 }: {
   data: any[];
   columns: TableColumn[];
+  clickCallback: (type: ClickCallbackTypes, row: any) => void;
 }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
@@ -201,6 +208,25 @@ export default function TableMUI({
                         ) : (
                           row[column.id]
                         )}
+                        {column.buttons && column.buttons.indexOf('edit') > -1 && (
+                          <IconButton
+                            aria-label="edit"
+                            size="small"
+                            onClick={() => clickCallback('edit', row)}
+                          >
+                            <EditIcon fontSize="inherit" />
+                          </IconButton>
+                        )}
+                        {column.buttons &&
+                          column.buttons.indexOf('delete') > -1 && (
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              onClick={() => clickCallback('delete', row)}
+                            >
+                              <ClearIcon fontSize="inherit" />
+                            </IconButton>
+                          )}
                       </TableCell>
                     ))}
                   </TableRow>
