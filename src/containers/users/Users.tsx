@@ -1,3 +1,10 @@
+import {
+  Avatar,
+  createStyles,
+  makeStyles,
+  Theme,
+  Typography,
+} from '@material-ui/core';
 import React, { Dispatch, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -14,10 +21,31 @@ import {
 } from '../../store/types/user.types';
 import UsersModal from './UserModal';
 import UsersTable from './UsersTable';
+import { orange } from '@material-ui/core/colors';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+    orange: {
+      color: orange[400],
+      backgroundColor: orange[400],
+    },
+    large: {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+    },
+  })
+);
 
 export default function Users() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalValues, setModalValues] = useState<TUser>();
+  const classes = useStyles();
 
   const dispatch = useDispatch<Dispatch<UsersActions>>();
 
@@ -54,9 +82,12 @@ export default function Users() {
   }));
 
   return (
-    <div className="container">
+    <div>
       <div className="inline space-btw align-cnt">
-        <h1>Users</h1>
+        <div className={classes.root}>
+          <Avatar className={classes.orange}></Avatar>
+          <Typography variant="h4">Members</Typography>
+        </div>
         <button
           type="button"
           className="kbbutton primary"
@@ -70,7 +101,6 @@ export default function Users() {
       )}
       <UsersModal
         isOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
         handleClose={handleClose}
         handleSave={handleSave}
         defaultValues={modalValues}

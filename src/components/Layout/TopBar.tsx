@@ -47,7 +47,7 @@ export default function TopBar() {
       elevation={0}
       className={classes.appBar}
     >
-      <Toolbar className={classes.toolbar}>
+      <Toolbar disableGutters className={classes.toolbar}>
         <nav>
           <Link
             component={RouterLink}

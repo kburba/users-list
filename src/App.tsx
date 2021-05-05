@@ -1,6 +1,6 @@
 import React from 'react';
 import Users from './containers/users/Users';
-import './styles/_index.scss';
+// import './styles/_index.scss';
 import { ConnectedRouter } from 'connected-react-router/immutable';
 import { Route, Switch } from 'react-router';
 import { history } from './store/configureStore';

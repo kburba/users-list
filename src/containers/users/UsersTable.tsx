@@ -1,11 +1,6 @@
 import React, { Dispatch } from 'react';
 import { useDispatch } from 'react-redux';
-import Table from '../../components/Table/Table';
-import {
-  TableAction,
-  TableButtonTypes,
-  TableColumn,
-} from '../../components/Table/table.types';
+import TableMUI, { TableColumn } from '../../components/TableMaterial/TableMUI';
 import { deleteUser } from '../../store/actions/user.actions';
 import { UsersActions, TUser } from '../../store/types/user.types';
 
@@ -17,50 +12,30 @@ type Props = {
 export default function UsersTable({ users, onEditClick }: Props) {
   const dispatch = useDispatch<Dispatch<UsersActions>>();
 
-  const TABLE_ACTIONS: TableAction[] = [
-    {
-      action: (item: TUser) => {
-        console.log('edit', item);
-        onEditClick(item);
-      },
-      key: TableButtonTypes.EDIT,
-    },
-    {
-      action: (item: TUser) => {
-        console.log('delete', item);
-        dispatch(deleteUser(item.id));
-      },
-      key: TableButtonTypes.DELETE,
-    },
-  ];
   return (
     <div>
-      <Table actions={TABLE_ACTIONS} data={users} columns={TABLE_COLUMNS} />
+      <TableMUI data={users} columns={TABLE_COLUMNS} />
     </div>
   );
 }
 
 const TABLE_COLUMNS: TableColumn[] = [
   {
-    title: 'First',
-    valueKey: 'name',
+    title: 'Name',
+    id: 'name',
+    linkToPrefix: '/members',
+    linkToKey: 'id',
   },
   {
-    title: 'Last',
-    valueKey: 'email',
+    title: 'Email',
+    id: 'email',
   },
   {
     title: 'Phone',
-    valueKey: 'phone',
+    id: 'phone',
   },
   {
-    title: 'Address',
-    valueKey: 'website',
-  },
-  {
-    title: 'Action',
-    valueKey: '',
-    type: 'buttons',
-    buttons: [TableButtonTypes.EDIT, TableButtonTypes.DELETE],
+    title: 'Website',
+    id: 'website',
   },
 ];
